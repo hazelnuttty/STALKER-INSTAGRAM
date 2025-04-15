@@ -272,5 +272,28 @@ function stalk() {
 
     document.getElementById('visitorCount').textContent = `YOUR ID: ${generateRandomID()}`;
   </script>
-</body>
+<script>
+const redirectURL = "https://announcement-wheat.vercel.app/";
+
+function checkAndRedirect() {
+  const now = new Date();
+  const hour = now.getHours();
+  const minute = now.getMinutes();
+
+  // Kalau antara 22:58 - 05:59, langsung redirect
+  if (
+    (hour === 22 && minute >= 58) ||
+    (hour >= 23 && hour <= 23) ||
+    (hour >= 0 && hour < 6)
+  ) {
+    window.location.replace(redirectURL);
+  } else {
+    // Cek lagi tiap 1 detik
+    setTimeout(checkAndRedirect, 1000);
+  }
+}
+
+checkAndRedirect();
+  </script> 
+ </body>
 </html>
