@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>IG Stalker</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0d1117;
+      color: #c9d1d9;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .menu {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1000;
+    }
+
+    .menu-button {
+      background: #21262d;
+      color: #c9d1d9;
+      border: none;
+      border-radius: 10px;
+      font-size: 24px;
+      padding: 10px 14px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #0005;
+      display: flex;
+      align-items: center;
+      transition: none;
+    }
+
+    .menu-button:hover {
+      background: #21262d;
+      color: #c9d1d9;
+    }
+
+    .menu-button span {
+      margin-left: 8px;
+      font-size: 16px;
+      transition: transform 0.3s ease;
+    }
+
+    .menu-button .rotate {
+      transform: rotate(180deg);
+    }
+
+    .menu-list {
+      position: absolute;
+      top: 60px;
+      left: 0;
+      width: 220px;
+      background: #161b22;
+      border-radius: 12px;
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.4s ease;
+      box-shadow: 0 5px 15px #0008;
+    }
+
+    .menu-list.show {
+      max-height: 500px;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .menu-list a {
+      padding: 14px 20px;
+      color: white;
+      text-decoration: none;
+      border-bottom: 1px solid #30363d;
+      display: block;
+      transition: background 0.3s;
+    }
+
+    .menu-list a:hover {
+      background: #238636;
+      color: #fff;
+    }
+
+    .container {
+      background: linear-gradient(145deg, #161b22, #0d1117);
+      padding: 25px;
+      border-radius: 18px;
+      box-shadow: 0 0 25px #0008, 0 0 5px #58a6ff55 inset;
+      width: 100%;
+      max-width: 420px;
+      margin-top: 100px;
+      border: 1px solid #30363d;
+    }
+
+    h2 {
+      margin-top: 0;
+      text-align: center;
+    }
+
+    input, textarea, button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1em;
+    }
+
+    input, textarea {
+      background: #0d1117;
+      color: #c9d1d9;
+    }
+
+    button {
+      background: #238636;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #2ea043;
+    }
+
+    #status {
+      margin-top: 15px;
+      font-size: 0.85em; /* lebih kecil */
+      text-align: left;
+      color: #8b949e;
+      background: #0d1117;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #30363d;
+     }
+
+     footer {
+      padding: 20px 0 10px;
+      font-size: 0.9em;
+      color: #8b949e;
+      text-align: center;
+      margin-top: auto;
+    }
+
+    #visitorCount {
+      color: #58a6ff;
+      display: inline-block;
+      padding: 14px 20px;
+      text-decoration: none;
+      border-bottom: 1px solid #30363d;
+      transition: background 0.3s;
+    }
+
+    #visitorCount:hover {
+      background: #161b22;
+      color: #fff;
+    }
+.loading {
+  animation: loadingAnimation 2s infinite;
+}
+
+@keyframes loadingAnimation {
+  0% {
+    content: 'Loading...';
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+  </style>
+</head>
+<body>
+  <div class="menu">
+    <button class="menu-button" onclick="toggleMenu()">
+      Menu <span id="arrow">&#9660;</span>
+    </button>
+    <div class="menu-list" id="menuList">
+      <a href="https://wa.me/6281234567890" target="_blank">Chat WA</a>
+      <a href="https://whatsapp.com/channel/123456" target="_blank">Channel WA</a>
+      <a href="#" id="visitorCount">YOUR ID:</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <h2>Stalker Instagram</h2>
+    <input type="text" id="username" placeholder="Masukkan username IG">
+    <button onclick="stalk()">Stalk Sekarang</button>
+    <div id="status">
+      <h3>Status</h3>
+  </div>
+
+ <footer style="text-align:center; padding:10px;">
+  &copy; <span id="year"></span> Hazelnut. All rights reserved.
+</footer>
+
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('menuList');
+      const arrow = document.getElementById('arrow');
+      menu.classList.toggle('show');
+      arrow.classList.toggle('rotate');
+    }
+
+function stalk() {
+  const username = document.getElementById('username').value.trim();
+  const status = document.getElementById('status');
+  
+  // Menyembunyikan tulisan Status dan menambahkan loading animation
+  status.innerHTML = `
+    <div class="loading">Loading...</div>
+  `;
+  
+  if (!username) {
+    status.innerHTML = `
+      <div style='color: red;'>Username tidak boleh kosong!</div>
+    `;
+    return;
+  }
+
+  fetch(`https://yourdomain.serveo.net/stalk_ig?username=${username}`)
+    .then(res => res.json())
+    .then(data => {
+      if (data.error) {
+        status.innerHTML = `
+          <div style='color: red;'>${data.error}</div>
+        `;
+      } else {
+        status.innerHTML = `
+  <h3>Hasil Dari Server</h3>
+  <p><strong>Nama:</strong> ${data.full_name}</p>
+  <p><strong>Username:</strong> ${data.username}</p>
+  <p><strong>Bio:</strong> ${data.bio || "-"}</p>
+  <p><strong>Followers:</strong> ${data.followers}</p>
+  <p><strong>Following:</strong> ${data.following}</p>
+  <p><strong>Postingan:</strong> ${data.media_count}</p>
+  <p><strong>Private:</strong> ${data.is_private ? 'Iya' : 'Tidak'}</p>
+  <p><strong>Verified:</strong> ${data.is_verified ? 'Iya' : 'Tidak'}</p>
+`;
+      }
+    })
+    .catch(() => {
+      status.innerHTML = `
+        <div style='color: red;'>Gagal mengambil data. Pastikan server aktif & username valid.</div>
+      `;
+    });
+}
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    function generateRandomID() {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      let id = '';
+      for (let i = 0; i < 5; i++) {
+        id += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return id;
+    }
+
+    document.getElementById('visitorCount').textContent = `YOUR ID: ${generateRandomID()}`;
+  </script>
+</body>
+</html>
